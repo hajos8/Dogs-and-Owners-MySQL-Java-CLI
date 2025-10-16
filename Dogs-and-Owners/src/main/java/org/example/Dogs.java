@@ -43,7 +43,7 @@ public class Dogs {
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
     }
-    
+
 
 
     // Constructor
