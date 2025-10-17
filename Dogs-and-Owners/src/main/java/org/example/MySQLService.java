@@ -76,7 +76,29 @@ public class MySQLService {
         }
     }
 
+    public static boolean updateDog(Connection conn, int dogId, String newName, float newAge, boolean newMale, int newOwnerId) {
+        try{
+            String query = "UPDATE dogs SET name = '" + newName + "', age = " + newAge + ", isMale = " + newMale + ", ownerId = " + newOwnerId + " WHERE id = " + dogId + ";";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            return stmt.execute();
+        }
+        catch(SQLException e){
+            System.out.println("SQL Error: " + e);
+            return false;
+        }
+    }
 
+    public static boolean updateOwner(Connection conn, int ownerId, String newOwnerName) {
+        try{
+            String query = "UPDATE dogs SET ownerid = " + newOwnerName + " WHERE id = " + ownerId + ";";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            return stmt.execute();
+        }
+        catch(SQLException e){
+            System.out.println("SQL Error: " + e);
+            return false;
+        }
+    }
 
 
 
