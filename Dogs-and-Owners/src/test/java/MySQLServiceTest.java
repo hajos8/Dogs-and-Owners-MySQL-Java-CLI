@@ -1,39 +1,35 @@
 import org.example.Dogs;
 import org.example.MySQLService;
 import org.example.Owners;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Objects;
 
 public class MySQLServiceTest {
+    @Before
+    public void setUp() {
+        MySQLService.isRunningTest = true;
+    }
+
     @Test
-    public void testConnect() {
-        try {
-            String hostname = "localhost";
-            String dbname = "dogs_and_owners";
-            String username = "root";
-            String password = "";
-
-            MySQLService.conn(hostname, dbname, username, password);
-
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
+    public void testConnection() throws SQLException {
+        Connection conn = MySQLService.createConnection();
+        MySQLService.closeConnection(conn);
     }
 
     @Test
     public void testCreateDog() {
         try {
-            String hostname = "localhost";
-            String dbname = "dogs_and_owners";
-            String username = "root";
-            String password = "";
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
 
-            Connection conn = MySQLService.conn(hostname, dbname, username, password);
             Dogs dog = new Dogs(99, "czigany", 3, true, 1);
-            MySQLService.CreateDog(conn, dog);
 
+            MySQLService.createDog(conn, dog);
+            MySQLService.closeConnection(conn);
         }
         catch (Exception e){
             System.out.println(e);
@@ -43,14 +39,29 @@ public class MySQLServiceTest {
     @Test
     public void testCreateOwner() {
         try {
-            String hostname = "localhost";
-            String dbname = "dogs_and_owners";
-            String username = "root";
-            String password = "";
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
 
-            Connection conn = MySQLService.conn(hostname, dbname, username, password);
             Owners owner = new Owners(99, "Lakatos");
-            MySQLService.CreateOwner(conn, owner);
+
+            MySQLService.createOwner(conn, owner);
+            MySQLService.closeConnection(conn);
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void testUpdateDog() {
+        try {
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
+
+            Dogs dog = new Dogs(99, "czigany", 4, false, 1);
+
+            MySQLService.updateDog(conn, dog);
+            MySQLService.closeConnection(conn);
 
         }
         catch (Exception e){
@@ -59,15 +70,31 @@ public class MySQLServiceTest {
     }
 
     @Test
+    public void testUpdateOwner() {
+        try {
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
+
+            Owners owner = new Owners(99, "Lakatlan");
+
+            MySQLService.updateOwner(conn, owner);
+            MySQLService.closeConnection(conn);
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+
+    @Test
     public void testDeleteDog() {
         try {
-            String hostname = "localhost";
-            String dbname = "dogs_and_owners";
-            String username = "root";
-            String password = "";
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
 
-            Connection conn = MySQLService.conn(hostname, dbname, username, password);
-            MySQLService.DeleteDog(conn, 99);
+            MySQLService.deleteDog(conn, 99);
+            MySQLService.closeConnection(conn);
 
         }
         catch (Exception e){
@@ -78,13 +105,41 @@ public class MySQLServiceTest {
     @Test
     public void testDeleteOwner() {
         try {
-            String hostname = "localhost";
-            String dbname = "dogs_and_owners";
-            String username = "root";
-            String password = "";
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
 
-            Connection conn = MySQLService.conn(hostname, dbname, username, password);
-            MySQLService.DeleteOwner(conn, 99);
+            MySQLService.deleteOwner(conn, 99);
+            MySQLService.closeConnection(conn);
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void testGetDogs() {
+        try {
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
+
+            MySQLService.printResultSet(Objects.requireNonNull(MySQLService.getDogs(conn)));
+            MySQLService.closeConnection(conn);
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void testGetOwners() {
+        try {
+            Connection conn = MySQLService.createConnection();
+            assert conn != null;
+
+            MySQLService.printResultSet(Objects.requireNonNull(MySQLService.getOwners(conn)));
+            MySQLService.closeConnection(conn);
 
         }
         catch (Exception e){
