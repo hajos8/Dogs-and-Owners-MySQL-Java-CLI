@@ -10,6 +10,8 @@ public class MySQLService {
     public static String username = "root";
     public static String password = "";
 
+    public static Connection conn;
+
     public static Connection createConnection() throws SQLException {
         try {
             String url = "jdbc:mysql://" + hostname + ":3306/" + dbname;
@@ -130,11 +132,15 @@ public class MySQLService {
         }
     }
 
-    public static ResultSet getDogs(Connection conn) {
+    public static ResultSet getDogs() {
         try {
+            Connection conn = createConnection();
+
             String query = "SELECT * FROM dogs;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
+
+            closeConnection(conn);
 
             return rs;
 
@@ -145,11 +151,15 @@ public class MySQLService {
         }
     }
 
-    public static ResultSet getOwners(Connection conn) {
+    public static ResultSet getOwners() {
         try {
+            Connection conn = createConnection();
+
             String query = "SELECT * FROM owners;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
+
+            closeConnection(conn);
 
             return rs;
 
