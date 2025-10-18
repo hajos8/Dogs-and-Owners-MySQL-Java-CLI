@@ -41,6 +41,7 @@ public class Main {
             switch(choice){
                 case 1 -> {
 
+                    MainHelper.insertDog();
                 }
                 case 2 -> {
 
