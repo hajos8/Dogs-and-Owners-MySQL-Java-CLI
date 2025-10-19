@@ -5,9 +5,6 @@ import java.util.Scanner;
 public class MainHelper {
     public static boolean isRunningTest = false;
 
-    public static int testMenuInput;
-
-    public static int testDogIdInput;
     public static String testDogNameInput;
     public static float testDogAgeInput;
     public static boolean testDogIsMaleInput;
@@ -56,8 +53,70 @@ public class MainHelper {
 
         System.out.println();
 
+        //user cannot set the id, it is auto generated
         Dogs newDog = new Dogs(null, dogName, dogAge, dogIsMale, dogOwnerId);
 
-        MySQLService.createDog(newDog);
+        if(MySQLService.createDog(newDog)){
+            System.out.println("Dog created successfully.");
+        } else {
+            System.out.println("Failed to create Dog.");
+        }
+    }
+
+    public static void insertOwner(){
+        Scanner scanner = new Scanner(System.in);
+
+        showOwner();
+
+        System.out.print("Enter Owner Name: ");
+        String ownerName = scanner.nextLine();
+        if(!isRunningTest) scanner.nextLine();
+
+        System.out.println();
+
+        //user cannot set the id, it is auto generated
+        Owners newOwner = new Owners(null, ownerName);
+
+        if(MySQLService.createOwner(newOwner)){
+            System.out.println("Owner created successfully.");
+        } else {
+            System.out.println("Failed to create Owner.");
+        }
+    }
+
+    public static void deleteDog(){
+        Scanner scanner = new Scanner(System.in);
+
+        showDog();
+
+        System.out.print("Enter Dog ID to delete: ");
+        int dogId = scanner.nextInt();
+        if(!isRunningTest) scanner.nextLine();
+
+        System.out.println();
+
+        if(MySQLService.deleteDog(dogId)){
+            System.out.println("Dog with ID " + dogId + " deleted successfully.");
+        } else {
+            System.out.println("Failed to delete Dog with ID " + dogId + ".");
+        }
+    }
+
+    public static void deleteOwner(){
+        Scanner scanner = new Scanner(System.in);
+
+        showOwner();
+
+        System.out.print("Enter Owner ID to delete: ");
+        int ownerId = scanner.nextInt();
+        if(!isRunningTest) scanner.nextLine();
+
+        System.out.println();
+
+        if(MySQLService.deleteOwner(ownerId)){
+            System.out.println("Owner with ID " + ownerId + " deleted successfully.");
+        } else {
+            System.out.println("Failed to delete Owner with ID " + ownerId + ".");
+        }
     }
 }

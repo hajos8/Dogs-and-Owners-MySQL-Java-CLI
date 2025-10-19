@@ -39,25 +39,12 @@ public class Main {
             int choice = isRunningTest ? testMenuInput : scanner.nextInt();
 
             switch(choice){
-                case 1 -> {
-
-                    MainHelper.insertDog();
-                }
-                case 2 -> {
-
-                }
-                case 3 -> {
-
-                }
-                case 4 -> {
-
-                }
-                case 5 -> {
-
-                }
-                case 6 -> {
-
-                }
+                case 1 -> MainHelper.insertOwner();
+                case 2 -> MainHelper.insertDog();
+                case 3 -> {}
+                case 4 -> {}
+                case 5 -> MainHelper.deleteOwner();
+                case 6 -> MainHelper.deleteDog();
                 case 7 -> {
                     exit = true;
                     System.out.println("Exiting...");

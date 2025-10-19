@@ -116,7 +116,7 @@ public class MySQLService {
         }
     }
 
-    public static boolean deleteOwner(int ownerId) throws SQLException {
+    public static boolean deleteOwner(int ownerId) {
         try{
             String query = "DELETE FROM owners WHERE id = " + ownerId + ";";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -179,7 +179,7 @@ public class MySQLService {
             String query = "SELECT * FROM owners;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
-            
+
             return rs;
 
         }
