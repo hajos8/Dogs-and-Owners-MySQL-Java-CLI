@@ -41,7 +41,7 @@ public class MainHelper {
         String dogName = isRunningTest ? testDogNameInput : scanner.nextLine();
         if(!isRunningTest) scanner.nextLine();
 
-        System.out.print("Enter Dog Age: ");
+        System.out.print("Enter Dog Age (yr): ");
         float dogAge = isRunningTest ? testDogAgeInput : scanner.nextFloat();
         if(!isRunningTest) scanner.nextLine();
 
@@ -55,7 +55,9 @@ public class MainHelper {
         if(!isRunningTest) scanner.nextLine();
 
         System.out.println();
-        
-        MySQLService.createDog(null, dogName, dogAge, dogIsMale, dogOwnerId);
+
+        Dogs newDog = new Dogs(null, dogName, dogAge, dogIsMale, dogOwnerId);
+
+        MySQLService.createDog(newDog);
     }
 }

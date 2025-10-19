@@ -161,13 +161,9 @@ public class MySQLService {
 
     public static ResultSet getDogs() {
         try {
-             = createConnection();
-
             String query = "SELECT * FROM dogs;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
-
-            closeConnection();
 
             return rs;
 
@@ -180,14 +176,10 @@ public class MySQLService {
 
     public static ResultSet getOwners() {
         try {
-             = createConnection();
-
             String query = "SELECT * FROM owners;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
-
-            closeConnection();
-
+            
             return rs;
 
         }
