@@ -18,38 +18,35 @@ public class MySQLServiceTest {
     @Test
     public void testAllMySQLServiceCreateUpdateDelete() {
         try {
-            //testCreateDog
+            //connect
             Connection conn = MySQLService.createConnection();
             assert conn != null;
 
+            //testCreateDog
             Dogs dog = new Dogs(99,"czigany", 3, true, 1);
-
             MySQLService.createDog(dog);
 
             //testCreateOwner
-
             Owners owner = new Owners(99, "Lakatos");
             MySQLService.createOwner(owner);
 
             //testUpdateDog
-
             HashMap<String, String> updates = new HashMap<>();
-            updates.put("name", "ubul");
+            updates.put("name_str", "ubul");
 
             MySQLService.updateDog(updates, 99);
 
             //testUpdateOwner
-
             Owners newOwner = new Owners(99, "Lakatlan");
             MySQLService.updateOwner(newOwner);
 
             //testDeleteDog
-
             MySQLService.deleteDog(99);
 
             //testDeleteOwner
             MySQLService.deleteOwner(99);
 
+            //close connection
             MySQLService.closeConnection();
         }
         catch (Exception e){
@@ -81,6 +78,40 @@ public class MySQLServiceTest {
             MySQLService.printResultSet(Objects.requireNonNull(MySQLService.getOwners()));
             MySQLService.closeConnection();
 
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void invalidValuesTest() {
+        try {
+            //test invalid dog creation
+            Dogs dog = new Dogs(null, null, -1, true, -5);
+            MySQLService.createDog(dog);
+
+            //test invalid owner creation
+            Owners owner = new Owners(null, null);
+            MySQLService.createOwner(owner);
+
+            //test invalid dog update
+            HashMap<String, String> updates = new HashMap<>();
+            updates.put("age_str", "5");
+            updates.put("age_float", "-3");
+
+            //test invalid owner update
+            Owners newOwner = new Owners(-10, null);
+            MySQLService.updateOwner(newOwner);
+
+            //test invalid dog deletion
+            MySQLService.deleteDog(-10);
+
+            //test invalid owner deletion
+            MySQLService.deleteOwner(-10);
+
+            MySQLService.getDogs();
+            MySQLService.getOwners();
         }
         catch (Exception e){
             System.out.println(e);

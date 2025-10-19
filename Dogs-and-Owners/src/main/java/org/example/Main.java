@@ -9,6 +9,9 @@ public class Main {
     public static void main(String[] args) {
         boolean exit = false;
         Scanner scanner = new Scanner(System.in);
+
+        MySQLService.createConnection();
+
         /*
         Menu
         -----
@@ -23,7 +26,7 @@ public class Main {
         Make your choice:
         */
 
-        while(!exit){
+        do{
             System.out.println("Menu");
             System.out.println("-----");
             System.out.println("1. Insert new Owner");
@@ -41,8 +44,8 @@ public class Main {
             switch(choice){
                 case 1 -> MainHelper.insertOwner();
                 case 2 -> MainHelper.insertDog();
-                case 3 -> {}
-                case 4 -> {}
+                case 3 -> MainHelper.updateOwner();
+                case 4 -> MainHelper.updateDog();
                 case 5 -> MainHelper.deleteOwner();
                 case 6 -> MainHelper.deleteDog();
                 case 7 -> {
@@ -50,7 +53,10 @@ public class Main {
                     System.out.println("Exiting...");
                 }
             }
+
         }
+        while(!exit || isRunningTest);
+        MySQLService.closeConnection();
 
     }
 }

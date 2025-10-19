@@ -13,14 +13,14 @@ public class MySQLService {
 
     public static Connection conn;
 
-    public static Connection createConnection() throws SQLException {
+    public static Connection createConnection(){
         try {
             String url = "jdbc:mysql://" + hostname + ":3306/" + dbname;
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, username, password);
             return conn;
         }
-        catch (ClassNotFoundException e) {
+        catch (Exception e) {
             System.out.println("SQL Error: " + e);
             return null;
         }
@@ -134,8 +134,20 @@ public class MySQLService {
             String query = "UPDATE dogs SET ";
 
             for (String key : updates.keySet()) {
+                String[] parts = key.split("_");
+
                 String value = updates.get(key);
-                query += key + " = " + value + ", ";
+                String field = parts[0];
+                switch(parts[1]) {
+                    case "str":
+                        value = "\"" + value + "\"";
+                        break;
+                    case "boolean":
+                        value = Boolean.parseBoolean(value) ? "1" : "0";
+                        break;
+                    //case "int" and "float" do nothing
+                }
+                query += field + " = " + value + ", ";
             }
 
             //remove last comma and space
@@ -155,7 +167,7 @@ public class MySQLService {
     public static boolean updateOwner(Owners newOwner) {
         try{
             String query = "UPDATE dogs SET " +
-                    "name = " + newOwner.getName() + " " +
+                    "name = \"" + newOwner.getName() + "\" " +
                     "WHERE id = " + newOwner.getId() + ";";
             PreparedStatement stmt = conn.prepareStatement(query);
             return stmt.execute();
