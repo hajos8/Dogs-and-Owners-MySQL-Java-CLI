@@ -1,6 +1,7 @@
 package org.example;
 
 import java.sql.*;
+import java.util.HashMap;
 
 import static java.util.Objects.isNull;
 
@@ -128,14 +129,20 @@ public class MySQLService {
         }
     }
 
-    public static boolean updateDog(Dogs newDog) {
+    public static boolean updateDog(HashMap<String, String> updates, int dogId) {
         try{
-            String query = "UPDATE dogs SET " +
-                    "name = \"" + newDog.getName() + "\", " +
-                    "age = " + newDog.getAge() + ", " +
-                    "isMale = " + newDog.isMale() + ", " +
-                    "ownerId = " + newDog.getOwnerId() + " " +
-                    "WHERE id = " + newDog.getId() + ";";
+            String query = "UPDATE dogs SET ";
+
+            for (String key : updates.keySet()) {
+                String value = updates.get(key);
+                query += key + " = " + value + ", ";
+            }
+
+            //remove last comma and space
+            query = query.substring(0, query.length() - 2) + " ";
+
+            query += "WHERE id = " + dogId + ";";
+
             PreparedStatement stmt = conn.prepareStatement(query);
             return stmt.execute();
         }

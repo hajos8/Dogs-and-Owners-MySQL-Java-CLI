@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MySQLServiceTest {
@@ -32,8 +33,10 @@ public class MySQLServiceTest {
 
             //testUpdateDog
 
-            Dogs newDog = new Dogs(99, "czigany", 4, false, 1);
-            MySQLService.updateDog(newDog);
+            HashMap<String, String> updates = new HashMap<>();
+            updates.put("name", "ubul");
+
+            MySQLService.updateDog(updates, 99);
 
             //testUpdateOwner
 

@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class MainHelper {
@@ -117,6 +118,108 @@ public class MainHelper {
             System.out.println("Owner with ID " + ownerId + " deleted successfully.");
         } else {
             System.out.println("Failed to delete Owner with ID " + ownerId + ".");
+        }
+    }
+
+    public static void updateDog(){
+        Scanner scanner = new Scanner(System.in);
+
+        showDog();
+
+        System.out.print("Enter Dog ID to update: ");
+        int DogId = scanner.nextInt();
+        if(!isRunningTest) scanner.nextLine();
+
+        int submenuChoice = 0;
+        StringBuilder updateChoices = new StringBuilder();
+
+        while(submenuChoice != 5) {
+            System.out.println("Update Dog Menu");
+            System.out.println("---------------");
+            System.out.println("1. Update Name");
+            System.out.println("2. Update Age");
+            System.out.println("3. Update whether Male"); //fidesz ezt nem engedi
+            System.out.println("4. Update Owner ID");
+            System.out.println("5. Exit from Update Dog Menu");
+            System.out.println("---------------");
+
+            System.out.print("Make your choice: ");
+
+            submenuChoice = scanner.nextInt();
+            if(!isRunningTest) scanner.nextLine();
+
+            switch (submenuChoice){
+                case 1 -> updateChoices.append("1");
+                case 2 -> updateChoices.append("2");
+                case 3 -> updateChoices.append("3");
+                case 4 -> updateChoices.append("4");
+                case 5 -> System.out.println("Exit from Update Dog Menu...");
+            }
+        }
+
+        HashMap<String, String> updates = new HashMap<>();
+
+        for(char choice : updateChoices.toString().toCharArray()){
+            switch (choice){
+                case '1' -> {
+                    System.out.print("Enter new Dog Name: ");
+                    String dogName = scanner.nextLine();
+                    if(!isRunningTest) scanner.nextLine();
+
+                    updates.put("name", dogName);
+
+                }
+                case '2' -> {
+                    System.out.print("Enter new Dog Age (yr): ");
+                    float dogAge = scanner.nextFloat();
+                    if(!isRunningTest) scanner.nextLine();
+
+                    updates.put("age", String.valueOf(dogAge));
+
+                }
+                case '3' -> {
+                    System.out.print("Enter whether the dog is male (y/n): ");
+                    boolean dogIsMale = (scanner.nextLine().toLowerCase().charAt(0) == 'y');
+                    if(!isRunningTest) scanner.nextLine();
+
+                    updates.put("isMale", String.valueOf(dogIsMale));
+                }
+                case '4' -> {
+                    System.out.print("Enter new Owner ID: ");
+                    int dogOwnerId = scanner.nextInt();
+                    if(!isRunningTest) scanner.nextLine();
+
+                    updates.put("ownerid", String.valueOf(dogOwnerId));
+                }
+            }
+        }
+
+
+
+    }
+
+
+    public static void updateOwner(){
+        Scanner scanner = new Scanner(System.in);
+
+        showOwner();
+
+        System.out.print("Enter Owner ID to update: ");
+        int ownerId = scanner.nextInt();
+        if(!isRunningTest) scanner.nextLine();
+
+        System.out.print("Enter new Owner Name: ");
+        String ownerName = scanner.nextLine();
+        if(!isRunningTest) scanner.nextLine();
+
+        System.out.println();
+
+        Owners updatedOwner = new Owners(ownerId, ownerName);
+
+        if(MySQLService.updateOwner(updatedOwner)){
+            System.out.println("Owner with ID " + ownerId + " updated successfully.");
+        } else {
+            System.out.println("Failed to update Owner with ID " + ownerId + ".");
         }
     }
 }
