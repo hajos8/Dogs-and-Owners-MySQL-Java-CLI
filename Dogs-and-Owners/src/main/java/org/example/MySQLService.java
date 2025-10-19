@@ -1,6 +1,7 @@
 package org.example;
 
 import java.sql.*;
+import java.util.HashMap;
 
 import static java.util.Objects.isNull;
 
@@ -12,14 +13,14 @@ public class MySQLService {
 
     public static Connection conn;
 
-    public static Connection createConnection() throws SQLException {
+    public static Connection createConnection(){
         try {
             String url = "jdbc:mysql://" + hostname + ":3306/" + dbname;
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, username, password);
             return conn;
         }
-        catch (ClassNotFoundException e) {
+        catch (Exception e) {
             System.out.println("SQL Error: " + e);
             return null;
         }
@@ -116,7 +117,7 @@ public class MySQLService {
         }
     }
 
-    public static boolean deleteOwner(int ownerId) throws SQLException {
+    public static boolean deleteOwner(int ownerId) {
         try{
             String query = "DELETE FROM owners WHERE id = " + ownerId + ";";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -128,14 +129,34 @@ public class MySQLService {
         }
     }
 
-    public static boolean updateDog(Dogs newDog) {
+    public static boolean updateDog(HashMap<String, String> updates, int dogId) {
         try{
-            String query = "UPDATE dogs SET " +
-                    "name = \"" + newDog.getName() + "\", " +
-                    "age = " + newDog.getAge() + ", " +
-                    "isMale = " + newDog.isMale() + ", " +
-                    "ownerId = " + newDog.getOwnerId() + " " +
-                    "WHERE id = " + newDog.getId() + ";";
+            String query = "UPDATE dogs SET ";
+
+            for (String key : updates.keySet()) {
+                System.out.println("Key: " + key + ", " + "value: " + updates.get(key));
+                String[] parts = key.split("_");
+
+                String value = updates.get(key);
+                String field = parts[0];
+                switch(parts[1]) {
+                    case "str":
+                        value = "\"" + value + "\"";
+                        break;
+                    case "boolean":
+                        value = Boolean.parseBoolean(value) ? "1" : "0";
+                        break;
+                    //case "int" and "double" do nothing
+                }
+                query += field + " = " + value + ", ";
+                System.out.println(query);
+            }
+
+            //remove last comma and space
+            query = query.substring(0, query.length() - 2) + " ";
+
+            query += "WHERE id = " + dogId + ";";
+
             PreparedStatement stmt = conn.prepareStatement(query);
             return stmt.execute();
         }
@@ -147,8 +168,8 @@ public class MySQLService {
 
     public static boolean updateOwner(Owners newOwner) {
         try{
-            String query = "UPDATE dogs SET " +
-                    "name = " + newOwner.getName() + " " +
+            String query = "UPDATE owners SET " +
+                    "name = \"" + newOwner.getName() + "\" " +
                     "WHERE id = " + newOwner.getId() + ";";
             PreparedStatement stmt = conn.prepareStatement(query);
             return stmt.execute();
@@ -161,13 +182,9 @@ public class MySQLService {
 
     public static ResultSet getDogs() {
         try {
-             = createConnection();
-
             String query = "SELECT * FROM dogs;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
-
-            closeConnection();
 
             return rs;
 
@@ -180,13 +197,9 @@ public class MySQLService {
 
     public static ResultSet getOwners() {
         try {
-             = createConnection();
-
             String query = "SELECT * FROM owners;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
-
-            closeConnection();
 
             return rs;
 

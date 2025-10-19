@@ -4,15 +4,15 @@ public class Dogs {
     //dog: id, name, age, male?, ownerid
     private Integer id;
     private String name;
-    private int age;
+    private double age;
     private boolean isMale;
     private int ownerId;
 
     //getters, setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -23,10 +23,10 @@ public class Dogs {
         this.name = name;
     }
 
-    public int getAge() {
+    public double getAge() {
         return age;
     }
-    public void setAge(int age) {
+    public void setAge(double age) {
         this.age = age;
     }
 
@@ -47,7 +47,7 @@ public class Dogs {
 
 
     // Constructor
-    public Dogs(int id, String name, int age, boolean isMale, int ownerId) {
+    public Dogs(Integer id, String name, double age, boolean isMale, int ownerId) {
         this.id = id;
         this.name = name;
         this.age = age;

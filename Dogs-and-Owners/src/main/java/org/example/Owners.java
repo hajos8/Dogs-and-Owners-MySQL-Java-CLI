@@ -6,10 +6,10 @@ public class Owners {
     private String name;
 
     //getters, setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -21,7 +21,7 @@ public class Owners {
     }
 
     // Constructor
-    public Owners(int id, String name) {
+    public Owners(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
