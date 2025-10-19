@@ -6,13 +6,16 @@ import java.util.Scanner;
 public class MainHelper {
     public static boolean isRunningTest = false;
 
+    public static int testDogId;
     public static String testDogNameInput;
     public static float testDogAgeInput;
     public static boolean testDogIsMaleInput;
     public static int testDogOwnerIdInput;
 
+    public static int testOwnerId;
     public static String testOwnerName;
 
+    public static int testSubMenuChoice;
 
     public static void showDog(){
         try{
@@ -109,6 +112,7 @@ public class MainHelper {
 
         System.out.print("Enter Owner ID to delete: ");
         int ownerId = scanner.nextInt();
+        if(!isRunningTest) scanner.nextLine();
 
         System.out.println();
 
@@ -125,7 +129,8 @@ public class MainHelper {
         showDog();
 
         System.out.print("Enter Dog ID to update: ");
-        int DogId = scanner.nextInt();
+        int DogId = isRunningTest ? testDogId : scanner.nextInt();
+        if(!isRunningTest) scanner.nextLine();
 
         int submenuChoice = 0;
         StringBuilder updateChoices = new StringBuilder();
@@ -142,7 +147,9 @@ public class MainHelper {
 
             System.out.print("Make your choice: ");
 
-            submenuChoice = scanner.nextInt();
+            submenuChoice = isRunningTest ? testSubMenuChoice : scanner.nextInt();
+            if(!isRunningTest) scanner.nextLine();
+
 
             switch (submenuChoice){
                 case 1 -> updateChoices.append("1");
@@ -159,35 +166,40 @@ public class MainHelper {
             switch (choice){
                 case '1' -> {
                     System.out.print("Enter new Dog Name: ");
-                    String dogName = scanner.nextLine();
-                    if(!isRunningTest) scanner.next();
+                    String dogName = isRunningTest ? testDogNameInput : scanner.nextLine();
 
                     updates.put("name_str", dogName);
 
                 }
                 case '2' -> {
                     System.out.print("Enter new Dog Age (yr): ");
-                    float dogAge = scanner.nextFloat();
-                    if(!isRunningTest) scanner.next();
+                    float dogAge = isRunningTest ? testDogAgeInput : scanner.nextFloat();
+                    if(!isRunningTest) scanner.nextLine();
 
                     updates.put("age_float", String.valueOf(dogAge));
 
                 }
                 case '3' -> {
                     System.out.print("Enter whether the dog is male (y/n): ");
-                    boolean dogIsMale = (scanner.nextLine().toLowerCase().charAt(0) == 'y');
-                    if(!isRunningTest) scanner.next();
+                    boolean dogIsMale = isRunningTest ?
+                            testDogIsMaleInput
+                            :
+                            (scanner.nextLine().toLowerCase().charAt(0) == 'y');
 
                     updates.put("isMale_boolean", String.valueOf(dogIsMale));
                 }
                 case '4' -> {
                     System.out.print("Enter new Owner ID: ");
-                    int dogOwnerId = scanner.nextInt();
-                    if(!isRunningTest) scanner.next();
+                    int dogOwnerId = isRunningTest ? testDogOwnerIdInput : scanner.nextInt();
+                    if(!isRunningTest) scanner.nextLine();
 
                     updates.put("ownerid_int", String.valueOf(dogOwnerId));
                 }
             }
+        }
+
+        for(String key : updates.keySet()){
+            System.out.println("Key: " + key + ", " + "value: " + updates.get(key));
         }
 
         if(!MySQLService.updateDog(updates, DogId)){
@@ -205,11 +217,11 @@ public class MainHelper {
         showOwner();
 
         System.out.print("Enter Owner ID to update: ");
-        int ownerId = scanner.nextInt();
-        if(!isRunningTest) scanner.next();
+        int ownerId = isRunningTest ? testOwnerId : scanner.nextInt();
+        if(!isRunningTest) scanner.nextLine();
 
         System.out.print("Enter new Owner Name: ");
-        String ownerName = scanner.nextLine();
+        String ownerName = isRunningTest ? testOwnerName : scanner.nextLine();
 
         System.out.println();
 

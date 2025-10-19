@@ -134,6 +134,7 @@ public class MySQLService {
             String query = "UPDATE dogs SET ";
 
             for (String key : updates.keySet()) {
+                System.out.println("Key: " + key + ", " + "value: " + updates.get(key));
                 String[] parts = key.split("_");
 
                 String value = updates.get(key);
@@ -148,6 +149,7 @@ public class MySQLService {
                     //case "int" and "float" do nothing
                 }
                 query += field + " = " + value + ", ";
+                System.out.println(query);
             }
 
             //remove last comma and space
@@ -166,7 +168,7 @@ public class MySQLService {
 
     public static boolean updateOwner(Owners newOwner) {
         try{
-            String query = "UPDATE dogs SET " +
+            String query = "UPDATE owners SET " +
                     "name = \"" + newOwner.getName() + "\" " +
                     "WHERE id = " + newOwner.getId() + ";";
             PreparedStatement stmt = conn.prepareStatement(query);
