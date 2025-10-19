@@ -98,7 +98,7 @@ public class MySQLServiceTest {
             //test invalid dog update
             HashMap<String, String> updates = new HashMap<>();
             updates.put("age_str", "5");
-            updates.put("age_float", "-3");
+            updates.put("age_double", "-3");
 
             //test invalid owner update
             Owners newOwner = new Owners(-10, null);

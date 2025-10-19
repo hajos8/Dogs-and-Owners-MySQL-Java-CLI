@@ -4,7 +4,7 @@ public class Dogs {
     //dog: id, name, age, male?, ownerid
     private Integer id;
     private String name;
-    private float age;
+    private double age;
     private boolean isMale;
     private int ownerId;
 
@@ -23,10 +23,10 @@ public class Dogs {
         this.name = name;
     }
 
-    public float getAge() {
+    public double getAge() {
         return age;
     }
-    public void setAge(float age) {
+    public void setAge(double age) {
         this.age = age;
     }
 
@@ -47,7 +47,7 @@ public class Dogs {
 
 
     // Constructor
-    public Dogs(Integer id, String name, float age, boolean isMale, int ownerId) {
+    public Dogs(Integer id, String name, double age, boolean isMale, int ownerId) {
         this.id = id;
         this.name = name;
         this.age = age;

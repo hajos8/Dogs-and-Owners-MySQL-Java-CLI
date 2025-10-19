@@ -8,7 +8,7 @@ public class MainHelper {
 
     public static int testDogId;
     public static String testDogNameInput;
-    public static float testDogAgeInput;
+    public static double testDogAgeInput;
     public static boolean testDogIsMaleInput;
     public static int testDogOwnerIdInput;
 
@@ -44,7 +44,7 @@ public class MainHelper {
         String dogName = isRunningTest ? testDogNameInput : scanner.nextLine();
 
         System.out.print("Enter Dog Age (yr): ");
-        float dogAge = isRunningTest ? testDogAgeInput : scanner.nextFloat();
+        double dogAge = isRunningTest ? testDogAgeInput : scanner.nextDouble();
         if(!isRunningTest) scanner.nextLine();
 
         System.out.print("Enter whether the dog is male (y/n): ");
@@ -93,7 +93,7 @@ public class MainHelper {
         showDog();
 
         System.out.print("Enter Dog ID to delete: ");
-        int dogId = scanner.nextInt();
+        int dogId = isRunningTest ? testDogId : scanner.nextInt();
         if(!isRunningTest) scanner.nextLine();
 
         System.out.println();
@@ -111,7 +111,7 @@ public class MainHelper {
         showOwner();
 
         System.out.print("Enter Owner ID to delete: ");
-        int ownerId = scanner.nextInt();
+        int ownerId = isRunningTest ? testOwnerId : scanner.nextInt();
         if(!isRunningTest) scanner.nextLine();
 
         System.out.println();
@@ -135,7 +135,7 @@ public class MainHelper {
         int submenuChoice = 0;
         StringBuilder updateChoices = new StringBuilder();
 
-        while(submenuChoice != 5) {
+        do{
             System.out.println("Update Dog Menu");
             System.out.println("---------------");
             System.out.println("1. Update Name");
@@ -159,6 +159,7 @@ public class MainHelper {
                 case 5 -> System.out.println("Exit from Update Dog Menu...");
             }
         }
+        while(submenuChoice != 5 && !isRunningTest);
 
         HashMap<String, String> updates = new HashMap<>();
 
@@ -173,10 +174,10 @@ public class MainHelper {
                 }
                 case '2' -> {
                     System.out.print("Enter new Dog Age (yr): ");
-                    float dogAge = isRunningTest ? testDogAgeInput : scanner.nextFloat();
+                    double dogAge = isRunningTest ? testDogAgeInput : scanner.nextDouble();
                     if(!isRunningTest) scanner.nextLine();
 
-                    updates.put("age_float", String.valueOf(dogAge));
+                    updates.put("age_double", String.valueOf(dogAge));
 
                 }
                 case '3' -> {

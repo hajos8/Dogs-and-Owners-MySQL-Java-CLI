@@ -37,6 +37,9 @@ public class Main {
             System.out.println("6. Delete existing Dog");
             System.out.println("7. Exit program");
             System.out.println("-----");
+            MySQLService.printResultSet(MySQLService.getDogs());
+            MySQLService.printResultSet(MySQLService.getOwners());
+            System.out.println("-----");
             System.out.print("Make your choice: ");
 
             int choice = isRunningTest ? testMenuInput : scanner.nextInt();
@@ -55,7 +58,7 @@ public class Main {
             }
 
         }
-        while(!exit || isRunningTest);
+        while(!exit && !isRunningTest);
         MySQLService.closeConnection();
 
     }

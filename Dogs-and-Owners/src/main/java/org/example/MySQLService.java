@@ -146,7 +146,7 @@ public class MySQLService {
                     case "boolean":
                         value = Boolean.parseBoolean(value) ? "1" : "0";
                         break;
-                    //case "int" and "float" do nothing
+                    //case "int" and "double" do nothing
                 }
                 query += field + " = " + value + ", ";
                 System.out.println(query);
