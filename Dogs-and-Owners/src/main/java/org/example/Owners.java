@@ -2,7 +2,7 @@ package org.example;
 
 public class Owners {
     //owner: id, name
-    private int id;
+    private Integer id;
     private String name;
 
     //getters, setters

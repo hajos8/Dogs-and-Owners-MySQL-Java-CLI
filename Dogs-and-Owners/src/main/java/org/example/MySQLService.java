@@ -2,9 +2,9 @@ package org.example;
 
 import java.sql.*;
 
-public class MySQLService {
-    public static boolean isRunningTest = false;
+import static java.util.Objects.isNull;
 
+public class MySQLService {
     public static String hostname = "localhost";
     public static String dbname = "dogs_and_owners";
     public static String username = "root";
@@ -16,7 +16,7 @@ public class MySQLService {
         try {
             String url = "jdbc:mysql://" + hostname + ":3306/" + dbname;
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, username, password);
+            conn = DriverManager.getConnection(url, username, password);
             return conn;
         }
         catch (ClassNotFoundException e) {
@@ -25,7 +25,7 @@ public class MySQLService {
         }
     }
 
-    public static void closeConnection(Connection conn) {
+    public static void closeConnection() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();
@@ -35,20 +35,35 @@ public class MySQLService {
         }
     }
 
-    public static boolean createDog(Connection conn, Dogs dog) {
+    public static boolean createDog(Dogs dog) {
         try{
             //dog: id, name, age, male?, ownerid
-            String query = "INSERT INTO dogs (id, name, age, isMale, ownerid) VALUES (" +
-                    dog.getId() + ", " +
-                    "\"" + dog.getName() + "\"" + ", " +
-                    dog.getAge() + ", " +
-                    dog.isMale() + ", " +
-                    dog.getOwnerId() +
-                    ");";
+            if(!isNull(dog.getId())) {
+                //id for testing purposes
+                String queryWithId = "INSERT INTO dogs (id, name, age, isMale, ownerid) VALUES (" +
+                        dog.getId() + ", " +
+                        "\"" + dog.getName() + "\"" + ", " +
+                        dog.getAge() + ", " +
+                        dog.isMale() + ", " +
+                        dog.getOwnerId() +
+                        ");";
 
-            PreparedStatement stmt = conn.prepareStatement(query);
+                PreparedStatement stmtWithId = conn.prepareStatement(queryWithId);
 
-            return stmt.execute();
+                return stmtWithId.execute();
+            }
+            else {
+                String query = "INSERT INTO dogs (name, age, isMale, ownerid) VALUES (" +
+                        "\"" + dog.getName() + "\"" + ", " +
+                        dog.getAge() + ", " +
+                        dog.isMale() + ", " +
+                        dog.getOwnerId() +
+                        ");";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                return stmt.execute();
+            }
         }
         catch(SQLException e){
             System.out.println("SQL Error: " + e);
@@ -57,19 +72,31 @@ public class MySQLService {
 
     }
 
-    public static boolean createOwner(Connection conn, Owners owner) {
+    public static boolean createOwner(Owners owner) {
         try{
             //owner: id, name, address, phone
-            String query = "INSERT INTO owners (id, name) VALUES " +
-                            "(" +
-                            owner.getId() +
-                            "," +
-                            "\"" + owner.getName() + "\"" +
-                            ");";
+            if(!isNull(owner.getId())) {
+                //id for testing purposes
+                String queryWithId = "INSERT INTO owners (id, name) VALUES " +
+                        "(" +
+                        owner.getId() + ", " +
+                        "\"" + owner.getName() + "\"" +
+                        ");";
 
-            PreparedStatement stmt = conn.prepareStatement(query);
+                PreparedStatement stmtWithId = conn.prepareStatement(queryWithId);
 
-            return stmt.execute();
+                return stmtWithId.execute();
+            }
+            else{
+                String query = "INSERT INTO owners (name) VALUES " +
+                        "(" +
+                        "\"" + owner.getName() + "\"" +
+                        ");";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                return stmt.execute();
+            }
         }
         catch(SQLException e){
             System.out.println("SQL Error: " + e);
@@ -77,7 +104,7 @@ public class MySQLService {
         }
     }
 
-    public static boolean deleteDog(Connection conn, int dogId) {
+    public static boolean deleteDog(int dogId) {
         try{
             String query = "DELETE FROM dogs WHERE id = " + dogId + ";";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -89,7 +116,7 @@ public class MySQLService {
         }
     }
 
-    public static boolean deleteOwner(Connection conn, int ownerId) throws SQLException {
+    public static boolean deleteOwner(int ownerId) throws SQLException {
         try{
             String query = "DELETE FROM owners WHERE id = " + ownerId + ";";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -101,7 +128,7 @@ public class MySQLService {
         }
     }
 
-    public static boolean updateDog(Connection conn, Dogs newDog) {
+    public static boolean updateDog(Dogs newDog) {
         try{
             String query = "UPDATE dogs SET " +
                     "name = \"" + newDog.getName() + "\", " +
@@ -118,7 +145,7 @@ public class MySQLService {
         }
     }
 
-    public static boolean updateOwner(Connection conn, Owners newOwner) {
+    public static boolean updateOwner(Owners newOwner) {
         try{
             String query = "UPDATE dogs SET " +
                     "name = " + newOwner.getName() + " " +
@@ -134,13 +161,13 @@ public class MySQLService {
 
     public static ResultSet getDogs() {
         try {
-            Connection conn = createConnection();
+             = createConnection();
 
             String query = "SELECT * FROM dogs;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
-            closeConnection(conn);
+            closeConnection();
 
             return rs;
 
@@ -153,13 +180,13 @@ public class MySQLService {
 
     public static ResultSet getOwners() {
         try {
-            Connection conn = createConnection();
+             = createConnection();
 
             String query = "SELECT * FROM owners;";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
-            closeConnection(conn);
+            closeConnection();
 
             return rs;
 
