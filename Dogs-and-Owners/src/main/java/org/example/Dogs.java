@@ -2,7 +2,7 @@ package org.example;
 
 public class Dogs {
     //dog: id, name, age, male?, ownerid
-    private int id;
+    private Integer id;
     private String name;
     private int age;
     private boolean isMale;

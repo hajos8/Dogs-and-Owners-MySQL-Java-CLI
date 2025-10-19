@@ -37,10 +37,6 @@ public class MainHelper {
 
         showDog();
 
-        System.out.print("Enter Dog ID: ");
-        int dogId = isRunningTest ? testDogIdInput : scanner.nextInt();
-        if(!isRunningTest) scanner.nextLine();
-
         System.out.print("Enter Dog Name: ");
         String dogName = isRunningTest ? testDogNameInput : scanner.nextLine();
         if(!isRunningTest) scanner.nextLine();
@@ -59,7 +55,7 @@ public class MainHelper {
         if(!isRunningTest) scanner.nextLine();
 
         System.out.println();
-
-        MySQLService.insertDog(dogId, dogName, dogAge, dogIsMale, dogOwnerId);
+        
+        MySQLService.createDog(null, dogName, dogAge, dogIsMale, dogOwnerId);
     }
 }
